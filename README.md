@@ -47,8 +47,12 @@ screen -r
 ### World Pregeneration
 When running on a smaller server such as a Raspberry Pi, lag can be a big issue. World pregeneration can help stop some lag spikes, especially in the early game. Try this [plugin](https://www.spigotmc.org/resources/fast-chunk-pregenerator.74429/) or if you know a better one, feel free to recommend it.
 
+## Minecraft Addons
+Look [here](./my-addons.md) for datapacks, plugins, and mods I've used.
+
 ## Future Enhancements
 - Get the correct version of Java for the Minecraft version.
 - Check if the passed version to use exists in the info file.
 - Add vanilla, bukkit, spigot, purple, and pufferfish servers availability in setup script.
 - Modded Minecraft server setup.
+- Add links to sites to get servers, datapacks, plugins, and mods

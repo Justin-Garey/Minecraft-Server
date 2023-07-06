@@ -1,4 +1,4 @@
-# A small list of datapacks, plugins, and mods used
+# A small list of datapacks, plugins, and mods I've used
 
 ## 1.20.1 Server with friends
 
