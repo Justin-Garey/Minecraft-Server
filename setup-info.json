@@ -1,0 +1,43 @@
+{
+  "paper": {
+    "link": "https://api.papermc.io/v2/projects/paper/versions/<VERSION>/builds/<BUILD>/downloads/paper-<VERSION>-<BUILD>.jar",
+    "versions": [
+      { "version": "1.8.8", "build": "445" },
+      { "version": "1.9.4", "build": "775" },
+      { "version": "1.10.2", "build": "918" },
+      { "version": "1.11.2", "build": "1106" },
+      { "version": "1.12", "build": "1169" },
+      { "version": "1.12.1", "build": "1204" },
+      { "version": "1.12.2", "build": "1620" },
+      { "version": "1.13-pre7", "build": "12" },
+      { "version": "1.13", "build": "173" },
+      { "version": "1.13.1", "build": "386" },
+      { "version": "1.13.2", "build": "657" },
+      { "version": "1.14", "build": "17" },
+      { "version": "1.14.1", "build": "50" },
+      { "version": "1.14.2", "build": "107" },
+      { "version": "1.14.3", "build": "134" },
+      { "version": "1.14.4", "build": "245" },
+      { "version": "1.15", "build": "21" },
+      { "version": "1.15.1", "build": "62" },
+      { "version": "1.15.2", "build": "393" },
+      { "version": "1.16.1", "build": "138" },
+      { "version": "1.16.2", "build": "189" },
+      { "version": "1.16.3", "build": "253" },
+      { "version": "1.16.4", "build": "416" },
+      { "version": "1.16.5", "build": "794" },
+      { "version": "1.17", "build": "79" },
+      { "version": "1.17.1", "build": "411" },
+      { "version": "1.18", "build": "66" },
+      { "version": "1.18.1", "build": "216" },
+      { "version": "1.18.2", "build": "388" },
+      { "version": "1.19", "build": "81" },
+      { "version": "1.19.1", "build": "111" },
+      { "version": "1.19.2", "build": "307" },
+      { "version": "1.19.3", "build": "448" },
+      { "version": "1.19.4", "build": "550" },
+      { "version": "1.20", "build": "17" },
+      { "version": "1.20.1", "build": "65" }
+    ]
+  }
+}

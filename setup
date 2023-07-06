@@ -1,0 +1,106 @@
+#!/bin/bash
+
+# Help function
+Help()
+{
+    echo "Syntax: setup [-h|o|v|V]"
+    echo 
+    echo "h                   Print this help menu"
+    echo "o                   Turn on optimization"
+    echo "v                   Turn on verbose mode"
+    echo "V =VERSION          Set the version to start"
+}
+
+# Defaults
+SERVER_OPTIMIZATION=true
+VERBOSITY=false
+JAVA_VERSION=17
+
+# Gather and use flags
+while getopts "hvo:V:" flag; do
+    case $flag in
+        h) Help
+           exit;;
+        o) SERVER_OPTIMIZATION=${OPTARG};;
+        v) VERBOSITY=true;;
+        V) VERSION=${OPTARG};;
+        *) Help
+           exit;;
+    esac
+done
+
+if $VERBOSITY
+then
+    echo "Server Optimization: $SERVER_OPTIMIZATION"
+    if [ -z "$VERSION" ]
+    then
+        echo "No Version Specified"
+    else
+        echo "Version to Use is $VERSION"
+    fi
+    echo "Updating then Installing jq and curl"
+fi
+# Update system and install jq and curl
+sudo apt update && sudo apt install -y jq curl
+
+# Check if VERSION is undefined
+if [ -z "$VERSION" ] 
+then
+    # Get the most recent version and its build number
+    VERSION=$(jq '.paper.versions[-1:][0].version' setup-info.json | tr -d '"')
+    BUILD=$(jq '.paper.versions[-1:][0].build' setup-info.json  | tr -d '"')
+else 
+    ##TODO: Need to check if version exists
+    # Get the build number of the desired version
+    BUILD=$(jq --arg VERSION $VERSION '.paper.versions[] | select(.version==$VERSION) | .build' setup-info.json  | tr -d '"')
+    ##TODO: Need to set the correct version of java
+fi
+
+SERVER_JAR=https://api.papermc.io/v2/projects/paper/versions/$VERSION/builds/$BUILD/downloads/paper-$VERSION-$BUILD.jar
+
+if $VERBOSITY
+then
+    echo "Version: $VERSION, Build: $BUILD"
+    echo "Paper Server Jar to Use: $SERVER_JAR"
+    echo "Installing openjdk-$JAVA_VERSION-jre"
+fi
+
+# Update packages list and install Java 17 (The Long Term Support Version)
+sudo apt install -y openjdk-$JAVA_VERSION-jre 
+
+
+if $VERBOSITY
+then
+    echo "Downloading the server jar"
+    echo "Setting the eula to true"
+fi
+
+# Download the jar file
+curl $SERVER_JAR --output server.jar
+
+# Setup the EULA file
+echo "eula=true" > eula.txt
+
+if $SERVER_OPTIMIZATION
+then
+    if $VERBOSITY
+    then
+        echo "Optimizing the Server Configurations"
+    fi
+    # Copy config files
+    cp defaults/server-defaults.properties server.properties
+    mkdir config
+    cp defaults/paper-world-defaults.yml config/paper-world-defaults.yml
+    # The chunks around a player that tick
+    sed -i 's/simulation-distance=10/simulation-distance=4/g' server.properties
+    # The distance a player can see
+    sed -i 's/view-distance=10/view-distance=8/g' server.properties
+    # Slow down incremental world saving
+    sed -i 's/max-auto-save-chunks-per-tick: 24/max-auto-save-chunks-per-tick: 8/g' config/paper-world-defaults.yml
+    # Speed up redstone calculations. May break very technical builds
+    sed -i 's/redstone-implementation: VANILLA/redstone-implementation: ALTERNATE_CURRENT/g' config/paper-world-defaults.yml
+    # Optimize explosions
+    sed -i 's/optimize-explosions: false/optimize-explosions: true/g' config/paper-world-defaults.yml
+    # Make non-player arrows despawn faster
+    sed -i 's/non-player-arrow-despawn-rate: default/non-player-arrow-despawn-rate: 100/g' config/paper-world-defaults.yml
+fi
